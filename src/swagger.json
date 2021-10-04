@@ -1,0 +1,157 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "RentalX Documentation",
+		"description": "This is an API Rent",
+		"version": "1.0.0",
+		"contact": {
+			"email": "fernando.tbarros@gmail.com"
+		}
+	},
+	"paths": {
+		"/users": {
+			"post":{
+				"tags": ["Users"],
+				"summary": "Create a new user",
+				"description": "Create a new user",
+				"requestBody":{
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string"
+									}
+								},
+								"example": {
+									"name": "User name",
+									"email": "user@email.com"
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Created"
+					},
+					"400": {
+						"description": "User with e-mail already exists"
+					}
+				}
+			},
+			"get":{
+				"tags": ["Users"],
+				"summary": "Get a list of all users",
+				"description": "Get the list of all users",
+				"parameters": [
+					{
+						"in": "header",
+						"required": true,
+						"name": "user_id",
+						"description": "ID do usuário",
+						"schema": {"type": "string"}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK, List of users",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"id": {
+											"type": "string",
+											"format": "uuid"
+										},
+										"admin": {
+											"type": "boolean"
+										},
+										"name": {
+											"type": "string"
+										},
+										"email": {
+											"type": "string"
+										},
+										"created_at": {
+											"type": "string",
+											"format": "date"
+										},
+										"updated_at": {
+											"type": "string",
+											"format": "date"
+										}
+									},
+									"example": {
+										"name": "User name",
+										"email": "user@email.com"
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "User not admin"
+					},
+					"500": {
+						"description": "Invalid parameter user_id"
+					}
+				}
+			}
+		},
+		"/users/{user_id}": {
+			"get":{
+				"tags": ["Users"],
+				"summary": "Get a specific user by user_id",
+				"description": "Get specific user by user_id",
+				"parameters": [
+					{
+						"in": "path",
+						"required": true,
+						"name": "user_id",
+						"description": "ID do usuário",
+						"schema": {"type": "string", "format": "uuid"}
+					}
+				],
+				"responses": {
+					"200":{
+						"description": "OK, User returned"
+					},
+					"404":{
+						"description": "User not found with id"
+					}
+				}
+			}
+		},
+		"/users/{user_id}/admin": {
+			"patch":{
+				"summary": "Turn a user into an admin",
+				"description": "Turn a user into an admin",
+				"tags": ["Users"],
+				"parameters": [
+					{
+						"in": "path",
+						"required": true,
+						"name": "user_id",
+						"description": "ID do usuário",
+						"schema": {"type": "string", "format": "uuid"}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK, User returned"
+					},
+					"404": {
+						"description": "User not found with user_id"
+					}
+				}
+			}
+		}
+	}
+}
